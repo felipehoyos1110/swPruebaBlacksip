@@ -1,0 +1,50 @@
+﻿<div id="body">
+    <input type="button" id="consultar" value="consultar" />
+    <ul id="contacts"></ul>
+</div>
+
+
+<form id="saveContactForm" method="post">
+    <h3>Crear Nuevo</h3>
+    <p>
+        <label for="Nombre">Nombre:</label>
+        <input type="text" name="Nombre" />
+    </p>
+    <p>
+        <label for="Apellido">Apellido:</label>
+        <input type="text" name="Apellido" />
+    </p>
+    <input type="button" id="saveContact" value="Save" />
+</form>
+
+@section scripts{
+ <script type="text/javascript">
+ $('#consultar').click(function ()
+{
+     $.getJSON('/api/Prueba', function(contactsJsonPayload)
+     {
+         $('#contacts').empty();
+            $(contactsJsonPayload).each(function(i, item)
+            {
+                $('#contacts').append('<li>' + item.Nombre + ' ' + item.Apellido + '</li>');
+            });
+        });
+});
+</script>
+
+<script type="text/javascript">
+
+$('#saveContact').click(function()
+         {
+    $.post("/api/Prueba",
+                    $("#saveContactForm").serialize(),
+                    function(value)
+                    {
+                        $('#contacts').append('<li>' + value.Nombre + ' ' + value.Apellido + '</li>');
+                    },
+                    "json"
+              );
+         });
+</script>
+
+}
